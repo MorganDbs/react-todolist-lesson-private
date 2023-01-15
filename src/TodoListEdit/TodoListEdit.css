@@ -1,0 +1,53 @@
+.todo-list-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px;
+}
+
+.todo-list-edit-add-column,
+.todo-list-edit-add-item {
+    display: flex;
+    gap: 16px;
+}
+
+.todo-list-edit-add-item .ant-select-selector {
+    width: 200px !important;
+}
+
+.todo-list-edit-columns {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.todo-list-edit-column {
+    width: 100%;
+}
+
+.todo-list-edit-item {
+    background-color: rgba(0, 0, 0, 0.08);
+    transition: background-color ease-in-out 0.2s;
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.todo-list-edit-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.todo-list-edit-item-action {
+    display: flex;
+    gap: 8px;
+}
+
+.todo-list-edit-item-modal .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.todo-list-column-header {
+    display: flex;
+    gap: 8px;
+}
