@@ -1,3 +1,3 @@
-import TodoListRedux from './TodoListRedux';
+import TodoListRedux from './TodoListReduxWrapper';
 
 export default TodoListRedux;

@@ -1,12 +1,11 @@
 import { Input, Button } from 'antd';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addColumn } from '../Slices/columnsSlice';
 
-interface AddColumnInterface {
-    onClickNewColumn(columnName: string): void;
-}
-
-const AddColumn = ({ onClickNewColumn }: AddColumnInterface) => {
+const AddColumn = () => {
     const [newColumnName, setColumnName] = useState<string>('');
+    const dispatch = useDispatch();
 
     const handleOnColumnNameChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -15,7 +14,7 @@ const AddColumn = ({ onClickNewColumn }: AddColumnInterface) => {
     };
 
     const handleOnClickNewColumn = () => {
-        onClickNewColumn(newColumnName);
+        dispatch(addColumn(newColumnName));
         setColumnName('');
     };
 

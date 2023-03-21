@@ -1,42 +1,35 @@
-import { Input, Modal, Select } from 'antd';
+import { Input, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Column, Item } from '../TodoListRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEditItem, State, updateItem } from '../Slices/columnsSlice';
 
-interface ItemModalInterface {
-    item: Item | undefined;
-    columns: Column[];
-    onCloseItem(): void;
-    onSaveItem(newItem: Item): void;
-}
-
-const ItemModal = ({
-    item,
-    onCloseItem,
-    onSaveItem,
-    columns,
-}: ItemModalInterface) => {
+const ItemModal = () => {
+    const dispatch = useDispatch();
+    const item = useSelector((state: State) => state.columnsStore.itemModal);
     const [newItemName, setNewItemName] = useState<string>();
-    const [newItemColumn, setNewItemColumn] = useState<string>();
 
     useEffect(() => {
         setNewItemName(item?.label);
     }, [item]);
 
     const handleOnSave = () => {
-        if (newItemName && item && newItemColumn) {
-            onSaveItem({
-                ...item,
-                label: newItemName,
-            });
+        if (newItemName && item) {
+            dispatch(
+                updateItem({
+                    ...item,
+                    label: newItemName,
+                })
+            );
         }
+        handleOnCloseItem();
     };
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewItemName(e.target.value);
     };
 
-    const handleOnCategoryChange = (newValue: string) => {
-        setNewItemColumn(newValue);
+    const handleOnCloseItem = () => {
+        dispatch(setEditItem(undefined));
     };
 
     return (
@@ -45,16 +38,10 @@ const ItemModal = ({
             open={item !== undefined}
             onOk={handleOnSave}
             okText="Save"
-            onCancel={onCloseItem}
+            onCancel={handleOnCloseItem}
             className="todo-list-redux-item-modal"
         >
             <Input value={newItemName} onChange={handleOnChange} />
-            <Select
-                placeholder="Select column"
-                onChange={handleOnCategoryChange}
-                value={newItemColumn}
-                options={columns}
-            />
         </Modal>
     );
 };

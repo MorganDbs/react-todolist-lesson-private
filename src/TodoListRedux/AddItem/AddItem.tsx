@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Input, Select } from 'antd';
-import { Column } from '../TodoListRedux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, State } from '../Slices/columnsSlice';
 
-interface AddItemInterface {
-    onClickNewItem(newItemName: string, columnIndex: number): void;
-    columns: Column[];
-}
-
-const AddItem = ({ onClickNewItem, columns }: AddItemInterface) => {
+const AddItem = () => {
+    const dispatch = useDispatch();
+    const columns = useSelector((state: State) => state.columnsStore.columns);
     const [newItemName, setNewItemName] = useState<string>('');
     const [newItemColumn, setNewItemColumn] = useState<string>();
 
@@ -25,7 +23,7 @@ const AddItem = ({ onClickNewItem, columns }: AddItemInterface) => {
         );
 
         if (columnIndex !== -1) {
-            onClickNewItem(newItemName, columnIndex);
+            dispatch(addItem({ newItemName, columnIndex }));
 
             setNewItemName('');
             setNewItemColumn(undefined);

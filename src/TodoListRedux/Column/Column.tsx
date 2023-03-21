@@ -4,16 +4,19 @@ import { Item } from '../TodoListRedux';
 import ItemComp from './Item';
 import Header from './Header';
 import { Draggable } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
+import {
+    deleteColumn,
+    deleteItem,
+    setEditColumn,
+    setEditItem,
+} from '../Slices/columnsSlice';
 
 interface ColumnInterface {
     value: string;
     label: string;
     index: number;
     columnItems: Item[];
-    onDeleteItem(itemIndex: number, columnIndex: number): void;
-    onEditItem(id: string): void;
-    onEditColumn(id: string): void;
-    onDeleteColumn(id: string): void;
 }
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -27,24 +30,17 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     ...draggableStyle,
 });
 
-const Column = ({
-    value,
-    label,
-    index,
-    columnItems,
-    onDeleteItem,
-    onEditItem,
-    onEditColumn,
-    onDeleteColumn,
-}: ColumnInterface) => {
+const Column = ({ value, label, index, columnItems }: ColumnInterface) => {
+    const dispatch = useDispatch();
+
     return (
         <List
             key={value}
             header={
                 <Header
                     label={label}
-                    onEditColumn={() => onEditColumn(value)}
-                    onDeleteColumn={() => onDeleteColumn(value)}
+                    onEditColumn={() => dispatch(setEditColumn(index))}
+                    onDeleteColumn={() => dispatch(deleteColumn(index))}
                 />
             }
             dataSource={columnItems}
@@ -65,9 +61,23 @@ const Column = ({
                                 label={itemLabel}
                                 id={id}
                                 onDeleteItem={() =>
-                                    onDeleteItem(itemIndex, index)
+                                    dispatch(
+                                        deleteItem({
+                                            itemIndex,
+                                            columnIndex: index,
+                                        })
+                                    )
                                 }
-                                onEditItem={() => onEditItem(id)}
+                                onEditItem={() =>
+                                    dispatch(
+                                        setEditItem({
+                                            label: itemLabel,
+                                            index: itemIndex,
+                                            columnIndex: index,
+                                            columnValue: value,
+                                        })
+                                    )
+                                }
                             />
                         </div>
                     )}
